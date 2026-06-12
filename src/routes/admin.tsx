@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare, ShoppingCart,
   FileText, Star, LogOut, Trash2, Mail, Shield, ArrowLeft, Settings as SettingsIcon,
+  ExternalLink,
 } from "lucide-react";
 import { SettingsTab } from "@/components/admin/SettingsTab";
 import { Button } from "@/components/ui/button";
