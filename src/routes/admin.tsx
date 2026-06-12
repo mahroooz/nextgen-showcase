@@ -155,7 +155,8 @@ function useTable<T>(table: string, order: string = "created_at", asc = false) {
   return useQuery<T[]>({
     queryKey: [`admin-${table}`],
     queryFn: async () => {
-      const { data, error } = await supabase.from(table).select("*").order(order, { ascending: asc });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase as any).from(table).select("*").order(order, { ascending: asc });
       if (error) throw error;
       return (data ?? []) as T[];
     },
