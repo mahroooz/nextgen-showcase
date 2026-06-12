@@ -64,7 +64,7 @@ export function SiteHeader() {
             <span className="pointer-events-none absolute -inset-1 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[image:var(--gradient-hero)] blur-md -z-10" />
           </span>
           <span className="font-display text-base font-semibold tracking-tight">
-            NextGen<span className="text-primary"> Digital</span>
+            Web<span className="text-primary">z</span>
           </span>
         </Link>
 

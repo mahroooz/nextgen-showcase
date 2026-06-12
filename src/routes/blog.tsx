@@ -10,9 +10,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Blog — NextGen Digital Solutions" },
-      { name: "description", content: "Field notes on product, design, engineering, and AI from the NextGen team." },
-      { property: "og:title", content: "Blog — NextGen Digital Solutions" },
+      { title: "Blog — Webz" },
+      { name: "description", content: "Field notes on product, design, engineering, and AI from the Webz team." },
+      { property: "og:title", content: "Blog — Webz" },
       { property: "og:description", content: "Field notes on product, design, engineering, and AI." },
       { property: "og:url", content: "/blog" },
     ],

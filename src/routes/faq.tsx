@@ -8,10 +8,10 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — NextGen Digital Solutions" },
-      { name: "description", content: "Common questions about working with NextGen Digital Solutions — pricing, process, timelines." },
-      { property: "og:title", content: "FAQ — NextGen Digital Solutions" },
-      { property: "og:description", content: "Common questions about working with NextGen — pricing, process, timelines." },
+      { title: "FAQ — Webz" },
+      { name: "description", content: "Common questions about working with Webz — pricing, process, timelines." },
+      { property: "og:title", content: "FAQ — Webz" },
+      { property: "og:description", content: "Common questions about working with Webz — pricing, process, timelines." },
       { property: "og:url", content: "/faq" },
     ],
     links: [{ rel: "canonical", href: "/faq" }],

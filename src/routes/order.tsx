@@ -20,9 +20,9 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/order")({
   head: () => ({
     meta: [
-      { title: "Start a project — NextGen Digital Solutions" },
+      { title: "Start a project — Webz" },
       { name: "description", content: "Tell us about your project. We respond within one business day with a scope and estimate." },
-      { property: "og:title", content: "Start a project — NextGen Digital Solutions" },
+      { property: "og:title", content: "Start a project — Webz" },
       { property: "og:description", content: "Tell us about your project and we'll get back within one business day." },
       { property: "og:url", content: "/order" },
     ],
