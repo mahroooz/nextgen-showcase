@@ -182,42 +182,70 @@ function AdminShell({ email }: { email: string }) {
 
 function Overview() {
   const fetchStats = useServerFn(getDashboardStats);
-  const { data } = useQuery({ queryKey: ["admin-stats"], queryFn: () => fetchStats() });
+  const { data, isLoading } = useQuery({ queryKey: ["admin-stats"], queryFn: () => fetchStats() });
 
   const cards = [
-    { label: "Orders", value: data?.ordersCount ?? 0, sub: `${data?.pendingOrders ?? 0} pending` },
-    { label: "Contacts", value: data?.contactsCount ?? 0, sub: `${data?.newContacts ?? 0} new` },
-    { label: "Projects", value: data?.projectsCount ?? 0 },
-    { label: "Services", value: data?.servicesCount ?? 0 },
-    { label: "Posts", value: data?.postsCount ?? 0, sub: `${data?.publishedPosts ?? 0} published` },
-    { label: "Testimonials", value: data?.testimonialsCount ?? 0, sub: `${data?.pendingTestimonials ?? 0} pending` },
-    { label: "Subscribers", value: data?.subscribersCount ?? 0 },
+    { label: "Orders", value: data?.ordersCount ?? 0, sub: `${data?.pendingOrders ?? 0} pending`, icon: ShoppingCart, tone: "text-sky-400", bg: "bg-sky-400/10" },
+    { label: "Contacts", value: data?.contactsCount ?? 0, sub: `${data?.newContacts ?? 0} new`, icon: MessageSquare, tone: "text-emerald-400", bg: "bg-emerald-400/10" },
+    { label: "Projects", value: data?.projectsCount ?? 0, sub: "Active portfolio", icon: FolderKanban, tone: "text-violet-400", bg: "bg-violet-400/10" },
+    { label: "Services", value: data?.servicesCount ?? 0, sub: "Listed offerings", icon: Briefcase, tone: "text-amber-400", bg: "bg-amber-400/10" },
+    { label: "Posts", value: data?.postsCount ?? 0, sub: `${data?.publishedPosts ?? 0} published`, icon: FileText, tone: "text-rose-400", bg: "bg-rose-400/10" },
+    { label: "Testimonials", value: data?.testimonialsCount ?? 0, sub: `${data?.pendingTestimonials ?? 0} pending`, icon: Star, tone: "text-yellow-400", bg: "bg-yellow-400/10" },
+    { label: "Subscribers", value: data?.subscribersCount ?? 0, sub: "Newsletter", icon: Mail, tone: "text-cyan-400", bg: "bg-cyan-400/10" },
   ];
 
   return (
-    <div className="space-y-6 max-w-7xl">
-      <div>
-        <h2 className="font-display text-3xl font-semibold">Dashboard</h2>
-        <p className="text-sm text-muted-foreground mt-1">A quick snapshot of activity across the platform.</p>
+    <div className="space-y-8 max-w-7xl">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="text-xs uppercase tracking-[0.18em] text-primary/80 font-semibold">Webz · Admin</div>
+          <h2 className="mt-1 font-display text-3xl md:text-4xl font-semibold">Dashboard overview</h2>
+          <p className="text-sm text-muted-foreground mt-1">Live snapshot of activity across your platform.</p>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          {new Date().toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+        </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
+
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-4">
         {cards.map((c) => (
-          <Card key={c.label} className="p-5 bg-card border-border">
-            <div className="text-xs uppercase tracking-wider text-muted-foreground">{c.label}</div>
-            <div className="mt-2 font-display text-3xl font-semibold">{c.value}</div>
+          <Card key={c.label} className="relative p-5 bg-card border-border overflow-hidden group hover:border-primary/40 transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground">{c.label}</div>
+              <div className={`h-8 w-8 rounded-lg grid place-items-center ${c.bg}`}>
+                <c.icon className={`h-4 w-4 ${c.tone}`} />
+              </div>
+            </div>
+            <div className="mt-3 font-display text-3xl font-semibold tabular-nums">
+              {isLoading ? <span className="text-muted-foreground">—</span> : c.value}
+            </div>
             {c.sub && <div className="mt-1 text-xs text-muted-foreground">{c.sub}</div>}
+            <div className="pointer-events-none absolute -right-8 -bottom-8 h-24 w-24 rounded-full bg-primary/5 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
           </Card>
         ))}
       </div>
+
       <Card className="p-6 bg-card border-border">
-        <h3 className="font-display text-lg font-semibold mb-4">Orders — last 6 months</h3>
-        <div className="h-64">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-display text-lg font-semibold">Orders trend</h3>
+            <p className="text-xs text-muted-foreground">Last 6 months</p>
+          </div>
+          <Badge variant="secondary" className="font-mono text-[10px]">LIVE</Badge>
+        </div>
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.ordersByMonth ?? []}>
-              <XAxis dataKey="month" stroke="currentColor" className="text-muted-foreground" fontSize={12} />
-              <YAxis stroke="currentColor" className="text-muted-foreground" fontSize={12} allowDecimals={false} />
-              <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-              <Bar dataKey="count" fill="var(--primary)" radius={[8, 8, 0, 0]} />
+              <defs>
+                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.95} />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.35} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="month" stroke="currentColor" className="text-muted-foreground" fontSize={12} tickLine={false} axisLine={false} />
+              <YAxis stroke="currentColor" className="text-muted-foreground" fontSize={12} allowDecimals={false} tickLine={false} axisLine={false} />
+              <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 10, fontSize: 12 }} />
+              <Bar dataKey="count" fill="url(#barGrad)" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
