@@ -14,8 +14,8 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — NextGen Digital Solutions" },
-      { name: "description", content: "Sign in to the NextGen Digital Solutions admin." },
+      { title: "Sign in — Webz" },
+      { name: "description", content: "Sign in to the Webz admin." },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
@@ -80,7 +80,7 @@ function AuthPage() {
             <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[image:var(--gradient-hero)] text-primary-foreground">
               <Sparkles className="h-5 w-5" />
             </span>
-            <h1 className="mt-5 font-display text-2xl font-semibold">Welcome to NextGen</h1>
+            <h1 className="mt-5 font-display text-2xl font-semibold">Welcome to Webz</h1>
             <p className="mt-1 text-sm text-muted-foreground">Sign in to manage your dashboard</p>
           </div>
 

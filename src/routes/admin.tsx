@@ -34,7 +34,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Admin — NextGen Digital Solutions" },
+      { title: "Admin — Webz" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
@@ -101,7 +101,7 @@ function AdminShell({ email }: { email: string }) {
                 <Shield className="h-4 w-4" />
               </div>
               <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
-                <span className="text-sm font-semibold">NextGen Admin</span>
+                <span className="text-sm font-semibold">Webz Admin</span>
                 <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Control panel</span>
               </div>
             </div>
@@ -448,7 +448,7 @@ const blogFields: Field[] = [
   { name: "content", label: "Content (markdown)", type: "textarea" },
   { name: "cover_image", label: "Cover image URL", type: "url" },
   { name: "tags", label: "Tags", type: "tags" },
-  { name: "author", label: "Author", type: "text", default: "NextGen Team" },
+  { name: "author", label: "Author", type: "text", default: "Webz Team" },
   { name: "published", label: "Published", type: "boolean", default: false },
 ];
 

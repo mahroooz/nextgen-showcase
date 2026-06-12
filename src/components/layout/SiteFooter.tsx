@@ -12,7 +12,7 @@ export function SiteFooter() {
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[image:var(--gradient-hero)] text-primary-foreground">
                 <Sparkles className="h-4.5 w-4.5" />
               </span>
-              <span className="font-display text-base font-semibold">NextGen Digital</span>
+              <span className="font-display text-base font-semibold">Webz</span>
             </Link>
             <p className="mt-4 max-w-md text-sm text-muted-foreground">
               We design and build digital products that move companies forward. Strategy, design, and engineering — under one roof.
@@ -55,9 +55,9 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4 pt-8 border-t border-border">
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} NextGen Digital Solutions. All rights reserved.</p>
-          <a href="mailto:hello@nextgen.digital" className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5">
-            <Mail className="h-3.5 w-3.5" /> hello@nextgen.digital
+          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Webz. All rights reserved.</p>
+          <a href="mailto:hello@webz.io" className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5">
+            <Mail className="h-3.5 w-3.5" /> hello@webz.io
           </a>
         </div>
       </div>

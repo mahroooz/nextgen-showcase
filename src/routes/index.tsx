@@ -18,9 +18,9 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NextGen Digital Solutions — Strategy, design & engineering" },
+      { title: "Webz — Strategy, design & engineering" },
       { name: "description", content: "We design and build digital products that move companies forward. Web, mobile, AI, cloud, and design — under one roof." },
-      { property: "og:title", content: "NextGen Digital Solutions" },
+      { property: "og:title", content: "Webz" },
       { property: "og:description", content: "We build what's next — web, mobile, AI, cloud, design." },
       { property: "og:url", content: "/" },
     ],
@@ -84,7 +84,7 @@ function Home() {
               We build <span className="text-gradient">what's next</span>.
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-              NextGen Digital Solutions is a product studio that designs, engineers, and scales digital products
+              Webz is a product studio that designs, engineers, and scales digital products
               for ambitious companies. From first sketch to millions of users.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -180,7 +180,7 @@ function Home() {
       <section className="container mx-auto px-4 md:px-6 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <Reveal>
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Why NextGen</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Why Webz</span>
             <h2 className="mt-2 font-display text-4xl md:text-5xl font-semibold">A studio built for outcomes</h2>
             <p className="mt-4 text-muted-foreground">We don't sell deliverables. We ship products that perform — measured by your users, your revenue, your reliability.</p>
           </Reveal>

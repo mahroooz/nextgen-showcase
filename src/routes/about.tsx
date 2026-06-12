@@ -8,10 +8,10 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — NextGen Digital Solutions" },
-      { name: "description", content: "The people, history, mission, and vision behind NextGen Digital Solutions." },
-      { property: "og:title", content: "About — NextGen Digital Solutions" },
-      { property: "og:description", content: "The people, history, mission, and vision behind NextGen Digital Solutions." },
+      { title: "About — Webz" },
+      { name: "description", content: "The people, history, mission, and vision behind Webz." },
+      { property: "og:title", content: "About — Webz" },
+      { property: "og:description", content: "The people, history, mission, and vision behind Webz." },
       { property: "og:url", content: "/about" },
     ],
     links: [{ rel: "canonical", href: "/about" }],
@@ -43,7 +43,7 @@ function AboutPage() {
         <Reveal>
           <span className="text-xs font-semibold uppercase tracking-wider text-primary">About</span>
           <h1 className="mt-2 font-display text-5xl md:text-6xl font-semibold">Builders, not vendors</h1>
-          <p className="mt-4 max-w-2xl text-muted-foreground">We started NextGen because we kept seeing great ideas held back by mediocre execution. We're a studio of senior people who actually ship.</p>
+          <p className="mt-4 max-w-2xl text-muted-foreground">We started Webz because we kept seeing great ideas held back by mediocre execution. We're a studio of senior people who actually ship.</p>
         </Reveal>
       </section>
 

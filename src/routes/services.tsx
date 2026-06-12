@@ -14,9 +14,9 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services & Pricing — NextGen Digital Solutions" },
+      { title: "Services & Pricing — Webz" },
       { name: "description", content: "Web, mobile, UI/UX, cloud, AI, and branding services. Transparent starting prices and clear deliverables." },
-      { property: "og:title", content: "Services & Pricing — NextGen Digital Solutions" },
+      { property: "og:title", content: "Services & Pricing — Webz" },
       { property: "og:description", content: "Web, mobile, UI/UX, cloud, AI, and branding services." },
       { property: "og:url", content: "/services" },
     ],

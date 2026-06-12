@@ -16,9 +16,9 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — NextGen Digital Solutions" },
-      { name: "description", content: "Talk to NextGen Digital Solutions. We answer within one business day." },
-      { property: "og:title", content: "Contact NextGen Digital Solutions" },
+      { title: "Contact — Webz" },
+      { name: "description", content: "Talk to Webz. We answer within one business day." },
+      { property: "og:title", content: "Contact Webz" },
       { property: "og:description", content: "We answer within one business day." },
       { property: "og:url", content: "/contact" },
     ],
@@ -76,7 +76,7 @@ function ContactPage() {
             <Card className="p-6 bg-card border-border">
               <Mail className="h-5 w-5 text-primary" />
               <div className="mt-3 text-xs uppercase tracking-wider text-muted-foreground">Email</div>
-              <a href="mailto:hello@nextgen.digital" className="mt-1 block font-medium hover:text-primary">hello@nextgen.digital</a>
+              <a href="mailto:hello@webz.io" className="mt-1 block font-medium hover:text-primary">hello@webz.io</a>
             </Card>
             <Card className="p-6 bg-card border-border">
               <Phone className="h-5 w-5 text-primary" />
@@ -141,7 +141,7 @@ function ContactPage() {
         <Reveal>
           <div className="overflow-hidden rounded-3xl border border-border aspect-[16/7]">
             <iframe
-              title="NextGen office location"
+              title="Webz office location"
               src="https://www.google.com/maps?q=350+Mission+Street+San+Francisco&output=embed"
               width="100%"
               height="100%"

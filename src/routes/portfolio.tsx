@@ -14,9 +14,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
-      { title: "Portfolio — NextGen Digital Solutions" },
-      { name: "description", content: "Selected projects from NextGen Digital Solutions across web, mobile, AI, fintech, healthcare, and IoT." },
-      { property: "og:title", content: "Portfolio — NextGen Digital Solutions" },
+      { title: "Portfolio — Webz" },
+      { name: "description", content: "Selected projects from Webz across web, mobile, AI, fintech, healthcare, and IoT." },
+      { property: "og:title", content: "Portfolio — Webz" },
       { property: "og:description", content: "Selected projects across web, mobile, AI, fintech, healthcare, and IoT." },
       { property: "og:url", content: "/portfolio" },
     ],
