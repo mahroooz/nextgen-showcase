@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare, ShoppingCart,
-  FileText, Star, LogOut, Trash2, Check, X, Mail, Shield, ArrowLeft,
+  FileText, Star, LogOut, Trash2, Mail, Shield, ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
