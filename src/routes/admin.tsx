@@ -328,104 +328,144 @@ function ContactsTab() {
   );
 }
 
-function GenericList({ table, columns }: { table: string; columns: (r: any) => React.ReactNode }) {
-  const qc = useQueryClient();
-  const { data: rows = [] } = useTable<any>(table);
-  const del = useServerFn(deleteRow);
-  const remove = useMutation({
-    mutationFn: (id: string) => del({ data: { table: table as any, id } }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: [`admin-${table}`] }); toast.success("Deleted"); },
-  });
+import { ResourceManager, type Field } from "@/components/admin/ResourceManager";
+
+const projectFields: Field[] = [
+  { name: "title", label: "Title", type: "text", required: true },
+  { name: "slug", label: "Slug", type: "text", required: true, placeholder: "url-friendly-name" },
+  { name: "category", label: "Category", type: "text", required: true },
+  { name: "description", label: "Description", type: "textarea" },
+  { name: "image_url", label: "Cover image URL", type: "url" },
+  { name: "tags", label: "Tags", type: "tags" },
+  { name: "client", label: "Client", type: "text" },
+  { name: "year", label: "Year", type: "number" },
+  { name: "url", label: "Live URL", type: "url" },
+  { name: "featured", label: "Featured", type: "boolean", default: false },
+  { name: "sort_order", label: "Sort order", type: "number", default: 0 },
+];
+
+function ProjectsTab() {
   return (
-    <Card className="bg-card border-border divide-y divide-border">
-      {rows.length === 0 && <div className="p-10 text-center text-muted-foreground">Nothing here yet</div>}
-      {rows.map((r) => (
-        <div key={r.id} className="p-5 flex items-center justify-between gap-4">
-          <div className="flex-1 min-w-0">{columns(r)}</div>
-          <Button size="icon" variant="ghost" onClick={() => remove.mutate(r.id)}><Trash2 className="h-4 w-4" /></Button>
+    <ResourceManager
+      table="projects"
+      title="Projects"
+      fields={projectFields}
+      renderRow={(r) => (
+        <div className="flex items-center gap-3">
+          {r.image_url && <img src={r.image_url} alt="" className="h-12 w-16 object-cover rounded" />}
+          <div>
+            <div className="font-medium">{r.title}</div>
+            <div className="text-xs text-muted-foreground">
+              {r.category} · {r.year ?? ""} {r.featured && "· Featured"}
+            </div>
+          </div>
         </div>
-      ))}
-    </Card>
+      )}
+    />
   );
 }
 
-function ProjectsTab() {
-  return <GenericList table="projects" columns={(r) => (
-    <div className="flex items-center gap-3">
-      {r.image_url && <img src={r.image_url} alt="" className="h-12 w-16 object-cover rounded" />}
-      <div>
-        <div className="font-medium">{r.title}</div>
-        <div className="text-xs text-muted-foreground">{r.category} · {r.year ?? ""} {r.featured && "· Featured"}</div>
-      </div>
-    </div>
-  )} />;
-}
+const serviceFields: Field[] = [
+  { name: "title", label: "Title", type: "text", required: true },
+  { name: "slug", label: "Slug", type: "text", required: true },
+  { name: "description", label: "Description", type: "textarea" },
+  { name: "icon", label: "Icon name", type: "text", placeholder: "e.g. sparkles" },
+  { name: "price_from", label: "Price from", type: "number" },
+  { name: "features", label: "Features", type: "tags", placeholder: "feature 1, feature 2" },
+  { name: "active", label: "Active", type: "boolean", default: true },
+  { name: "sort_order", label: "Sort order", type: "number", default: 0 },
+];
 
 function ServicesTab() {
-  return <GenericList table="services" columns={(r) => (
-    <div>
-      <div className="font-medium">{r.title}</div>
-      <div className="text-xs text-muted-foreground">From ${Number(r.price_from).toLocaleString()} · {r.active ? "Active" : "Inactive"}</div>
-    </div>
-  )} />;
+  return (
+    <ResourceManager
+      table="services"
+      title="Services"
+      fields={serviceFields}
+      renderRow={(r) => (
+        <div>
+          <div className="font-medium">{r.title}</div>
+          <div className="text-xs text-muted-foreground">
+            {r.price_from != null ? `From $${Number(r.price_from).toLocaleString()} · ` : ""}
+            {r.active ? "Active" : "Inactive"}
+          </div>
+        </div>
+      )}
+    />
+  );
 }
+
+const testimonialFields: Field[] = [
+  { name: "name", label: "Name", type: "text", required: true },
+  { name: "role", label: "Role", type: "text" },
+  { name: "company", label: "Company", type: "text" },
+  { name: "content", label: "Quote", type: "textarea", required: true },
+  { name: "rating", label: "Rating (1-5)", type: "number", default: 5 },
+  { name: "avatar_url", label: "Avatar URL", type: "url" },
+  { name: "approved", label: "Approved", type: "boolean", default: false },
+];
 
 function TestimonialsTab() {
   const qc = useQueryClient();
-  const { data: rows = [] } = useTable<any>("testimonials");
   const approve = useServerFn(setTestimonialApproved);
-  const del = useServerFn(deleteRow);
   const setApproval = useMutation({
     mutationFn: (vars: { id: string; approved: boolean }) => approve({ data: vars }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-testimonials"] }),
-  });
-  const remove = useMutation({
-    mutationFn: (id: string) => del({ data: { table: "testimonials", id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-testimonials"] }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-testimonials"] }); toast.success("Updated"); },
   });
   return (
-    <Card className="bg-card border-border divide-y divide-border">
-      {rows.length === 0 && <div className="p-10 text-center text-muted-foreground">No testimonials</div>}
-      {rows.map((r) => (
-        <div key={r.id} className="p-5 flex items-start justify-between gap-4">
+    <ResourceManager
+      table="testimonials"
+      title="Testimonials"
+      fields={testimonialFields}
+      renderRow={(r) => (
+        <div className="flex-1 flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <div className="font-medium">{r.name}</div>
               <Badge variant={r.approved ? "default" : "secondary"}>{r.approved ? "Approved" : "Pending"}</Badge>
+              <span className="text-xs text-muted-foreground">★ {r.rating}</span>
             </div>
             <div className="text-xs text-muted-foreground">{[r.role, r.company].filter(Boolean).join(" · ")}</div>
-            <p className="mt-2 text-sm text-muted-foreground">"{r.content}"</p>
+            <p className="mt-2 text-sm text-muted-foreground line-clamp-2">"{r.content}"</p>
           </div>
-          <div className="flex gap-1">
-            <Button size="icon" variant="ghost" onClick={() => setApproval.mutate({ id: r.id, approved: !r.approved })}>
-              {r.approved ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
-            </Button>
-            <Button size="icon" variant="ghost" onClick={() => remove.mutate(r.id)}><Trash2 className="h-4 w-4" /></Button>
-          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={(e) => { e.stopPropagation(); setApproval.mutate({ id: r.id, approved: !r.approved }); }}
+          >
+            {r.approved ? "Unapprove" : "Approve"}
+          </Button>
         </div>
-      ))}
-    </Card>
+      )}
+    />
   );
 }
 
+const blogFields: Field[] = [
+  { name: "title", label: "Title", type: "text", required: true },
+  { name: "slug", label: "Slug", type: "text", required: true },
+  { name: "excerpt", label: "Excerpt", type: "textarea" },
+  { name: "content", label: "Content (markdown)", type: "textarea" },
+  { name: "cover_image", label: "Cover image URL", type: "url" },
+  { name: "tags", label: "Tags", type: "tags" },
+  { name: "author", label: "Author", type: "text", default: "NextGen Team" },
+  { name: "published", label: "Published", type: "boolean", default: false },
+];
+
 function BlogTab() {
   const qc = useQueryClient();
-  const { data: rows = [] } = useTable<any>("blog_posts");
   const publish = useServerFn(setPostPublished);
-  const del = useServerFn(deleteRow);
   const setPub = useMutation({
     mutationFn: (vars: { id: string; published: boolean }) => publish({ data: vars }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-blog_posts"] }),
-  });
-  const remove = useMutation({
-    mutationFn: (id: string) => del({ data: { table: "blog_posts", id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-blog_posts"] }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-blog_posts"] }); toast.success("Updated"); },
   });
   return (
-    <Card className="bg-card border-border divide-y divide-border">
-      {rows.length === 0 && <div className="p-10 text-center text-muted-foreground">No posts</div>}
-      {rows.map((r) => (
-        <div key={r.id} className="p-5 flex items-start justify-between gap-4">
+    <ResourceManager
+      table="blog_posts"
+      title="Blog posts"
+      fields={blogFields}
+      renderRow={(r) => (
+        <div className="flex-1 flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <div className="font-medium">{r.title}</div>
@@ -433,17 +473,19 @@ function BlogTab() {
             </div>
             <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{r.excerpt}</p>
           </div>
-          <div className="flex gap-1">
-            <Button size="icon" variant="ghost" onClick={() => setPub.mutate({ id: r.id, published: !r.published })}>
-              {r.published ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
-            </Button>
-            <Button size="icon" variant="ghost" onClick={() => remove.mutate(r.id)}><Trash2 className="h-4 w-4" /></Button>
-          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={(e) => { e.stopPropagation(); setPub.mutate({ id: r.id, published: !r.published }); }}
+          >
+            {r.published ? "Unpublish" : "Publish"}
+          </Button>
         </div>
-      ))}
-    </Card>
+      )}
+    />
   );
 }
+
 
 function NewsletterTab() {
   const { data: rows = [] } = useTable<any>("newsletter_subscribers");
