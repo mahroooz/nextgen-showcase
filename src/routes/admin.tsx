@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare, ShoppingCart,
   FileText, Star, LogOut, Trash2, Mail, Shield, ArrowLeft, Settings as SettingsIcon,
+  ExternalLink,
 } from "lucide-react";
 import { SettingsTab } from "@/components/admin/SettingsTab";
 import { Button } from "@/components/ui/button";
@@ -384,10 +385,21 @@ function ProjectsTab() {
       renderRow={(r) => (
         <div className="flex items-center gap-3">
           {r.image_url && <img src={r.image_url} alt="" className="h-12 w-16 object-cover rounded" />}
-          <div>
+          <div className="min-w-0">
             <div className="font-medium">{r.title}</div>
             <div className="text-xs text-muted-foreground">
               {r.category} · {r.year ?? ""} {r.featured && "· Featured"}
+              {r.url && (
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-0.5 ml-2 text-primary hover:underline"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ExternalLink className="h-3 w-3" /> Visit
+                </a>
+              )}
             </div>
           </div>
         </div>
