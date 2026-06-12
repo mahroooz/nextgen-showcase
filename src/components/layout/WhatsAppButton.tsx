@@ -1,7 +1,10 @@
 import { MessageCircle } from "lucide-react";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 export function WhatsAppButton() {
-  const phone = "15551234567";
+  const { data } = useSiteSettings();
+  const phone = (data?.whatsapp_number ?? "15551234567").replace(/\D/g, "");
+  if (!phone) return null;
   const text = encodeURIComponent("Hi Webz — I'd like to discuss a project.");
   return (
     <a

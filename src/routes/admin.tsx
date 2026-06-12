@@ -4,8 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare, ShoppingCart,
-  FileText, Star, LogOut, Trash2, Mail, Shield, ArrowLeft,
+  FileText, Star, LogOut, Trash2, Mail, Shield, ArrowLeft, Settings as SettingsIcon,
 } from "lucide-react";
+import { SettingsTab } from "@/components/admin/SettingsTab";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -44,7 +45,7 @@ export const Route = createFileRoute("/admin")({
 
 type Section =
   | "overview" | "orders" | "contacts" | "projects"
-  | "services" | "testimonials" | "blog" | "newsletter";
+  | "services" | "testimonials" | "blog" | "newsletter" | "settings";
 
 const NAV: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -55,6 +56,7 @@ const NAV: { id: Section; label: string; icon: React.ComponentType<{ className?:
   { id: "testimonials", label: "Testimonials", icon: Star },
   { id: "blog", label: "Blog", icon: FileText },
   { id: "newsletter", label: "Newsletter", icon: Mail },
+  { id: "settings", label: "Settings", icon: SettingsIcon },
 ];
 
 function AdminPage() {
@@ -173,6 +175,7 @@ function AdminShell({ email }: { email: string }) {
             {section === "testimonials" && <TestimonialsTab />}
             {section === "blog" && <BlogTab />}
             {section === "newsletter" && <NewsletterTab />}
+            {section === "settings" && <SettingsTab />}
           </main>
         </div>
       </div>
