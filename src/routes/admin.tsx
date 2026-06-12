@@ -4,12 +4,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, FolderKanban, Briefcase, MessageSquare, ShoppingCart,
-  FileText, Star, LogOut, Trash2, Check, X, Mail,
+  FileText, Star, LogOut, Trash2, Check, X, Mail, Shield, ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -19,7 +18,11 @@ import {
 import {
   BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip,
 } from "recharts";
-import { SiteShell } from "@/components/layout/SiteShell";
+import {
+  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent,
+  SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton,
+  SidebarMenuItem, SidebarProvider, SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, useIsAdmin } from "@/hooks/use-auth";
 import {
@@ -39,13 +42,28 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
+type Section =
+  | "overview" | "orders" | "contacts" | "projects"
+  | "services" | "testimonials" | "blog" | "newsletter";
+
+const NAV: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "orders", label: "Orders", icon: ShoppingCart },
+  { id: "contacts", label: "Contacts", icon: MessageSquare },
+  { id: "projects", label: "Projects", icon: FolderKanban },
+  { id: "services", label: "Services", icon: Briefcase },
+  { id: "testimonials", label: "Testimonials", icon: Star },
+  { id: "blog", label: "Blog", icon: FileText },
+  { id: "newsletter", label: "Newsletter", icon: Mail },
+];
+
 function AdminPage() {
   const { user, loading } = useAuth();
   const { isAdmin, loading: roleLoading } = useIsAdmin(user?.id);
   const navigate = useNavigate();
 
   if (loading || roleLoading) {
-    return <SiteShell><div className="container mx-auto py-32 text-center text-muted-foreground">Loading...</div></SiteShell>;
+    return <div className="min-h-screen grid place-items-center text-muted-foreground">Loading…</div>;
   }
   if (!user) {
     navigate({ to: "/auth" });
@@ -53,59 +71,112 @@ function AdminPage() {
   }
   if (!isAdmin) {
     return (
-      <SiteShell>
-        <div className="container mx-auto py-32 text-center max-w-md">
-          <h1 className="font-display text-3xl font-semibold">Not authorized</h1>
+      <div className="min-h-screen grid place-items-center px-6">
+        <div className="text-center max-w-md">
+          <Shield className="mx-auto h-10 w-10 text-primary" />
+          <h1 className="mt-4 font-display text-3xl font-semibold">Not authorized</h1>
           <p className="mt-3 text-sm text-muted-foreground">Your account ({user.email}) isn't an admin.</p>
-          <p className="mt-2 text-xs text-muted-foreground">First user wanting access? Ask the project owner to grant the admin role in the database.</p>
-          <Button className="mt-6" variant="outline" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); }}>Sign out</Button>
-        </div>
-      </SiteShell>
-    );
-  }
-
-  return <Dashboard email={user.email ?? ""} />;
-}
-
-function Dashboard({ email }: { email: string }) {
-  const navigate = useNavigate();
-  return (
-    <SiteShell>
-      <section className="container mx-auto px-4 md:px-6 py-12">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Admin</span>
-            <h1 className="mt-2 font-display text-4xl font-semibold">Dashboard</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Signed in as {email}</p>
-          </div>
-          <Button variant="outline" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); }}>
-            <LogOut className="h-4 w-4" /> Sign out
+          <Button className="mt-6" variant="outline" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); }}>
+            Sign out
           </Button>
         </div>
+      </div>
+    );
+  }
+  return <AdminShell email={user.email ?? ""} />;
+}
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="flex-wrap h-auto">
-            <TabsTrigger value="overview"><LayoutDashboard className="h-3.5 w-3.5"/> Overview</TabsTrigger>
-            <TabsTrigger value="orders"><ShoppingCart className="h-3.5 w-3.5"/> Orders</TabsTrigger>
-            <TabsTrigger value="contacts"><MessageSquare className="h-3.5 w-3.5"/> Contacts</TabsTrigger>
-            <TabsTrigger value="projects"><FolderKanban className="h-3.5 w-3.5"/> Projects</TabsTrigger>
-            <TabsTrigger value="services"><Briefcase className="h-3.5 w-3.5"/> Services</TabsTrigger>
-            <TabsTrigger value="testimonials"><Star className="h-3.5 w-3.5"/> Testimonials</TabsTrigger>
-            <TabsTrigger value="blog"><FileText className="h-3.5 w-3.5"/> Blog</TabsTrigger>
-            <TabsTrigger value="newsletter"><Mail className="h-3.5 w-3.5"/> Newsletter</TabsTrigger>
-          </TabsList>
+function AdminShell({ email }: { email: string }) {
+  const [section, setSection] = useState<Section>("overview");
+  const navigate = useNavigate();
+  const active = NAV.find((n) => n.id === section)!;
 
-          <TabsContent value="overview"><Overview /></TabsContent>
-          <TabsContent value="orders"><OrdersTab /></TabsContent>
-          <TabsContent value="contacts"><ContactsTab /></TabsContent>
-          <TabsContent value="projects"><ProjectsTab /></TabsContent>
-          <TabsContent value="services"><ServicesTab /></TabsContent>
-          <TabsContent value="testimonials"><TestimonialsTab /></TabsContent>
-          <TabsContent value="blog"><BlogTab /></TabsContent>
-          <TabsContent value="newsletter"><NewsletterTab /></TabsContent>
-        </Tabs>
-      </section>
-    </SiteShell>
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <Sidebar collapsible="icon">
+          <SidebarHeader className="border-b border-sidebar-border">
+            <div className="flex items-center gap-2 px-2 py-3">
+              <div className="h-8 w-8 rounded-md bg-primary/15 grid place-items-center text-primary">
+                <Shield className="h-4 w-4" />
+              </div>
+              <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
+                <span className="text-sm font-semibold">NextGen Admin</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Control panel</span>
+              </div>
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>Manage</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {NAV.map((item) => (
+                    <SidebarMenuItem key={item.id}>
+                      <SidebarMenuButton
+                        isActive={section === item.id}
+                        onClick={() => setSection(item.id)}
+                        tooltip={item.label}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.label}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+            <SidebarGroup>
+              <SidebarGroupLabel>Shortcuts</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton onClick={() => navigate({ to: "/" })} tooltip="Back to site">
+                      <ArrowLeft className="h-4 w-4" />
+                      <span>Back to site</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter className="border-t border-sidebar-border">
+            <div className="px-2 py-2 text-xs text-muted-foreground truncate group-data-[collapsible=icon]:hidden">
+              {email}
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="justify-start gap-2"
+              onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); }}
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="group-data-[collapsible=icon]:hidden">Sign out</span>
+            </Button>
+          </SidebarFooter>
+        </Sidebar>
+
+        <div className="flex-1 flex flex-col min-w-0">
+          <header className="h-14 flex items-center gap-3 border-b border-border px-4 sticky top-0 bg-background/80 backdrop-blur z-10">
+            <SidebarTrigger />
+            <div className="flex items-center gap-2">
+              <active.icon className="h-4 w-4 text-primary" />
+              <h1 className="text-sm font-semibold">{active.label}</h1>
+            </div>
+          </header>
+          <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
+            {section === "overview" && <Overview />}
+            {section === "orders" && <OrdersTab />}
+            {section === "contacts" && <ContactsTab />}
+            {section === "projects" && <ProjectsTab />}
+            {section === "services" && <ServicesTab />}
+            {section === "testimonials" && <TestimonialsTab />}
+            {section === "blog" && <BlogTab />}
+            {section === "newsletter" && <NewsletterTab />}
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }
 
@@ -124,8 +195,12 @@ function Overview() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+    <div className="space-y-6 max-w-7xl">
+      <div>
+        <h2 className="font-display text-3xl font-semibold">Dashboard</h2>
+        <p className="text-sm text-muted-foreground mt-1">A quick snapshot of activity across the platform.</p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
         {cards.map((c) => (
           <Card key={c.label} className="p-5 bg-card border-border">
             <div className="text-xs uppercase tracking-wider text-muted-foreground">{c.label}</div>
