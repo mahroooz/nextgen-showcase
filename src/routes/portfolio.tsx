@@ -117,19 +117,33 @@ function Portfolio() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((p, i) => (
               <Reveal key={p.id} delay={(i % 3) * 0.05}>
-                <button onClick={() => setActive(p)} className="group block text-left w-full">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-secondary">
-                    {p.image_url && (
-                      <img src={p.image_url} alt={p.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
-                    <Badge className="absolute top-3 left-3 bg-background/80 text-foreground border border-border backdrop-blur">{p.category}</Badge>
-                    <div className="absolute bottom-0 left-0 right-0 p-5">
-                      <h3 className="font-display text-xl font-semibold">{p.title}</h3>
-                      <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
+                <div className="group relative block text-left w-full">
+                  <button onClick={() => setActive(p)} className="w-full text-left">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-secondary">
+                      {p.image_url && (
+                        <img src={p.image_url} alt={p.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
+                      <Badge className="absolute top-3 left-3 bg-background/80 text-foreground border border-border backdrop-blur">{p.category}</Badge>
+                      {p.url && (
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="absolute top-3 right-3 rounded-lg bg-background/80 border border-border backdrop-blur p-2 text-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:text-primary"
+                          onClick={(e) => e.stopPropagation()}
+                          aria-label="Visit website"
+                        >
+                          <Globe className="h-4 w-4" />
+                        </a>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 p-5">
+                        <h3 className="font-display text-xl font-semibold">{p.title}</h3>
+                        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
+                      </div>
                     </div>
-                  </div>
-                </button>
+                  </button>
+                </div>
               </Reveal>
             ))}
           </div>
