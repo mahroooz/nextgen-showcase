@@ -145,12 +145,7 @@ function ResourceDialog({
   onSubmit: (values: Record<string, any>) => void;
   submitting: boolean;
 }) {
-  const [values, setValues] = useState<Record<string, any>>({});
-
-  // Reset values when dialog opens
-  useState(() => {
-    setValues(seedValues(fields, initial));
-  });
+  const [values, setValues] = useState<Record<string, any>>(() => seedValues(fields, initial));
 
   function set<K extends string>(k: K, v: any) {
     setValues((prev) => ({ ...prev, [k]: v }));
