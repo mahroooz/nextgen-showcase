@@ -101,32 +101,38 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border/60 bg-background/95 backdrop-blur-xl shadow-lg animate-in slide-in-from-top-2 duration-200">
-          <nav className="container mx-auto flex flex-col px-4 py-4">
-            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
-              Menu
-            </p>
-            {NAV.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="group flex items-center justify-between rounded-lg px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
-                activeOptions={{ exact: item.to === "/" }}
-              >
-                <span>{item.label}</span>
-                <span className="text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-primary">→</span>
-              </Link>
-            ))}
-            <div className="mt-3 border-t border-border/60 pt-3">
+        <>
+          <div
+            className="lg:hidden fixed inset-0 top-16 z-40 bg-background/60 backdrop-blur-sm animate-in fade-in duration-200"
+            onClick={() => setOpen(false)}
+          />
+          <aside className="lg:hidden fixed right-0 top-16 bottom-0 z-50 w-72 max-w-[85vw] border-l border-border/60 bg-background/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-200 flex flex-col">
+            <nav className="flex flex-col px-4 py-5 overflow-y-auto flex-1">
+              <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
+                Menu
+              </p>
+              {NAV.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
+                  activeOptions={{ exact: item.to === "/" }}
+                >
+                  <span>{item.label}</span>
+                  <span className="text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-primary">→</span>
+                </Link>
+              ))}
+            </nav>
+            <div className="border-t border-border/60 px-4 py-4">
               <Button asChild className="w-full" size="sm">
                 <Link to="/order">Start a project</Link>
               </Button>
-              <p className="mt-3 px-1 text-center text-xs text-muted-foreground">
+              <p className="mt-3 px-1 text-center text-[11px] text-muted-foreground">
                 Webz · Strategy, design & engineering
               </p>
             </div>
-          </nav>
-        </div>
+          </aside>
+        </>
       )}
     </header>
   );
