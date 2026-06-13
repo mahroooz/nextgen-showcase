@@ -101,21 +101,30 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-xl">
-          <nav className="container mx-auto flex flex-col gap-1 px-4 py-3">
+        <div className="lg:hidden border-t border-border/60 bg-background/95 backdrop-blur-xl shadow-lg animate-in slide-in-from-top-2 duration-200">
+          <nav className="container mx-auto flex flex-col px-4 py-4">
+            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
+              Menu
+            </p>
             {NAV.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground data-[status=active]:text-foreground data-[status=active]:bg-secondary"
+                className="group flex items-center justify-between rounded-lg px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
                 activeOptions={{ exact: item.to === "/" }}
               >
-                {item.label}
+                <span>{item.label}</span>
+                <span className="text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-primary">→</span>
               </Link>
             ))}
-            <Button asChild className="mt-2" size="sm">
-              <Link to="/order">Start a project</Link>
-            </Button>
+            <div className="mt-3 border-t border-border/60 pt-3">
+              <Button asChild className="w-full" size="sm">
+                <Link to="/order">Start a project</Link>
+              </Button>
+              <p className="mt-3 px-1 text-center text-xs text-muted-foreground">
+                Webz · Strategy, design & engineering
+              </p>
+            </div>
           </nav>
         </div>
       )}
