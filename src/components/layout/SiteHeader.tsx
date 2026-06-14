@@ -107,7 +107,7 @@ export function SiteHeader() {
             onClick={() => setOpen(false)}
           />
           <aside className="lg:hidden fixed right-0 top-16 bottom-0 z-50 w-72 max-w-[85vw] border-l border-border/60 bg-background/95 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right duration-200 flex flex-col">
-            <nav className="flex flex-col px-4 py-5 overflow-y-auto flex-1">
+            <nav className="flex flex-col px-4 py-5 pb-8 overflow-y-auto flex-1 overscroll-contain">
               <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
                 Menu
               </p>
